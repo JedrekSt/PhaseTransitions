@@ -1,4 +1,4 @@
-# Pase Transitions
+# Phase Transitions
 
 This repository explores the behavior of spin chain systems, with a focus on analyzing phase transitions under various conditions and topologies.
 
