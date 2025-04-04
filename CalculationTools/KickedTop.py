@@ -127,7 +127,6 @@ class Drive_Simulation:
         self.device = device
         self.model = NewKickedTop(n,alpha,beta = beta,device = device)
         self.reductor = Reductor(self.n-1,device = device)
-        print("device ready")
 
     def PrepareInitialState(self, theta : float, phi : float) -> torch.tensor:
         st = [np.sqrt(float(comb(self.n-1,k))) * np.cos(theta)**(self.n-1 - k) * np.sin(theta)**(k) * np.exp(1j * phi * (self.n-1-k)) for k in range(self.n) ]
@@ -143,10 +142,7 @@ class Drive_Simulation:
         states = [self.PrepareInitialState(theta,phi_) for theta, phi_ in zip(th,phi)]
         perturbed_states = [U3 @ rho_ @ U3.conj().T for rho_ in states]
 
-        print(f"number of states inside the sample: {len(states)}")
-
         dist_, lin_S = self.AvgPerStep(states,perturbed_states)
-        print(f"initial distnce : {dist_}, linear entropy : {lin_S}")
         distance = [dist_]
         linear_S = [lin_S]
         for _ in range(steps):
