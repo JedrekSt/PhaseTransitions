@@ -58,14 +58,14 @@ class Operators:
         self.device = device
         self.get_all()
 
-    def get_all(self):
+    def get_all(self) -> None:
         self.sigma_x = torch.tensor([[0, 1],[-1,0]], dtype = torch.complex64, device = self.device)
         self.sigma_y = torch.tensor([[0, -1j],[1j,0]], dtype = torch.complex64, device = self.device)
         self.sigma_z = torch.tensor([[1,0],[0,-1]], dtype = torch.complex64, device = self.device)
         self.Id = torch.tensor([[1,0],[0,1]], dtype = torch.complex64, device = self.device)
 
 class NewKickedTop:
-    def __init__(self, n : int, alpha : float, beta : float = np.pi/2, device : str = device) -> None:
+    def __init__(self, n : int, alpha : float, beta : float = np.pi/2, device : str = "cpu") -> None:
         self.n = n
         self.device = device
 
@@ -122,7 +122,7 @@ class Reductor:
         self.red01 = self.red10
 
 class Drive_Simulation:
-    def __init__(self, n : int, alpha : float, beta : float = np.pi/2, device : str = "cpu"):
+    def __init__(self, n : int, alpha : float, beta : float = np.pi/2, device : str = "cpu") -> None:
         self.n = n
         self.device = device
         self.model = NewKickedTop(n,alpha,beta = beta,device = device)
@@ -137,7 +137,7 @@ class Drive_Simulation:
         st = torch.kron(st_q,st)
         return torch.kron(st.reshape(-1,1),st.reshape(1,-1).conj())
 
-    def run(self,steps : int = 64, sample_size : int = 10, m : list = [0,1,0], phi : float = 0.01):
+    def run(self,steps : int = 64, sample_size : int = 10, m : list = [0,1,0], phi : float = 0.01) -> tuple:
         th, phi = self.random_points_sphere(sample_size)
         U3 = self.model.Perturbation(m,0.01)
         states = [self.PrepareInitialState(theta,phi_) for theta, phi_ in zip(th,phi)]
